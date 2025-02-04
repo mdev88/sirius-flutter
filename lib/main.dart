@@ -43,21 +43,27 @@ class MyHomePage extends StatelessWidget with WatchItMixin {
         title: Text('Sirius demo'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              watchPropertyValue((MainController mc) => mc.name),
-            ),
-            Text(
-              'User name: ${watchPropertyValue((MainController mc) => mc.user.name)}',
-            ),
-            Text(
-              '${watchPropertyValue((MainController m) => m.counter)}',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+        child: watchPropertyValue((MainController mc) => mc.finished)
+            ? Text(
+                'This is the end',
+                style: Theme.of(context).textTheme.headlineMedium,
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    watchPropertyValue((MainController mc) => mc.title),
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  Text(
+                    'User name: ${watchPropertyValue((MainController mc) => mc.user.name)}',
+                  ),
+                  Text(
+                    '${watchPropertyValue((MainController m) => m.counter)}',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ],
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: controller.incrementCounter,

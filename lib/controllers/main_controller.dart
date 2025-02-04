@@ -2,33 +2,46 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 
+import '../models/user.dart';
+
 class MainController extends ChangeNotifier {
+  /*
+  Counter
+   */
   int counter = 0;
 
   void incrementCounter() {
     counter++;
     notifyListeners();
-    log('Counter value: $counter');
+
     if (counter == 5) {
-      changeName();
+      changeTitle();
     }
     if (counter == 10) {
       user.name = 'Javier';
     }
+    if (counter == 15) {
+      finished = true;
+    }
   }
 
-  String name = 'Sirius';
+  /*
+  Title
+   */
+  String title = 'Sirius';
 
-  void changeName() {
-    name = 'Martín';
+  void changeTitle() {
+    title = 'Sirius DEMO';
     notifyListeners();
   }
 
+  /*
+  User
+   */
   User user = User();
-}
 
-class User {
-  String? name;
-
-  User({this.name});
+  /*
+  Finished
+   */
+  bool finished = false;
 }
