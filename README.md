@@ -5,9 +5,9 @@ This repository contains the code for the FLutter App.
 
 ## Technical details
 These are the more relevant packages:
-- get_it: Service locator
-- watch_it: State management
-- odoo_repository or odoo_rpc (to be defined): Odoo communication
+- [get_it](https://pub.dev/packages/get_it): Service locator
+- [watch_it](https://pub.dev/packages/watch_it): State management
+- [odoo_repository](https://pub.dev/packages/odoo_repository) or [odoo_rpc](https://pub.dev/packages/odoo_rpc) (to be defined): Odoo communication
 
 ## Sponsorship
 This project is sponsored by [Faster Empleo](https://faster.es)
