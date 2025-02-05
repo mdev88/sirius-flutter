@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sirius_flutter/controllers/app_controller.dart';
 import 'package:sirius_flutter/controllers/home_controller.dart';
 import 'package:watch_it/watch_it.dart';
 
@@ -9,6 +10,7 @@ final getIt = GetIt.instance;
 
 // Get_it setup.
 void getItSetup() {
+  getIt.registerSingleton<AppController>(AppController());
   getIt.registerSingleton<HomeController>(HomeController());
 }
 
@@ -17,7 +19,7 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget with WatchItMixin {
   const MyApp({super.key});
 
   @override
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sirius Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        colorScheme: watchPropertyValue((AppController ac) => ac.scheme),
         useMaterial3: true,
       ),
       home: HomePage(),

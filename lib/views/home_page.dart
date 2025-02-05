@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
 
+import '../controllers/app_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomePage extends StatelessWidget with WatchItMixin {
@@ -9,7 +10,12 @@ class HomePage extends StatelessWidget with WatchItMixin {
   /*
   Instance of this page's controller
    */
-  final controller = GetIt.I.get<HomeController>();
+  final homeCtl = GetIt.I.get<HomeController>();
+
+  /*
+  Instance of the App's controller (for switching color scheme)
+   */
+  final appCtl = GetIt.I.get<AppController>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +48,27 @@ class HomePage extends StatelessWidget with WatchItMixin {
                 ),
               ],
             ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Increment',
-        onPressed: controller.pushButtonAction,
-        child: const Icon(Icons.plus_one),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            tooltip: 'Increment',
+            onPressed: homeCtl.pushButtonAction,
+            child: const Icon(Icons.plus_one),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            tooltip: 'Increment',
+            onPressed: appCtl.changeToDarkScheme,
+            child: const Icon(Icons.palette_outlined),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            tooltip: 'Increment',
+            onPressed: appCtl.changeToLightScheme,
+            child: const Icon(Icons.palette_rounded),
+          ),
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
