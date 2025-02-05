@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget with WatchItMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Contador (int): ${watchPropertyValue((HomeController hc) => hc.counter)}',
+                  'Observo un int: ${watchPropertyValue((HomeController hc) => hc.counter)}',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 SizedBox(height: 10),
