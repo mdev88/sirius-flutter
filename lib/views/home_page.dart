@@ -8,14 +8,14 @@ class HomePage extends StatelessWidget with WatchItMixin {
   HomePage({super.key});
 
   /*
-  Instance of this page's controller
-   */
-  final homeCtl = GetIt.I.get<HomeController>();
-
-  /*
-  Instance of the App's controller (for switching color scheme)
+  Reference to the App's controller (for switching color scheme)
    */
   final appCtl = GetIt.I.get<AppController>();
+
+  /*
+  Reference to this page's controller
+   */
+  final homeCtl = GetIt.I.get<HomeController>();
 
   @override
   Widget build(BuildContext context) {

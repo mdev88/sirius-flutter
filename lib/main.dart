@@ -5,13 +5,10 @@ import 'package:watch_it/watch_it.dart';
 
 import 'views/home_page.dart';
 
-// Global Get_it instance
-final getIt = GetIt.instance;
-
 // Get_it setup.
 void getItSetup() {
-  getIt.registerSingleton<AppController>(AppController());
-  getIt.registerSingleton<HomeController>(HomeController());
+  GetIt.I.registerSingleton<AppController>(AppController());
+  GetIt.I.registerSingleton<HomeController>(HomeController());
 }
 
 void main() {
