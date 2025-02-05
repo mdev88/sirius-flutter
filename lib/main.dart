@@ -5,15 +5,15 @@ import 'package:watch_it/watch_it.dart';
 
 import 'views/home_page.dart';
 
+void main() {
+  getItSetup();
+  runApp(const MyApp());
+}
+
 // Get_it setup.
 void getItSetup() {
   GetIt.I.registerSingleton<AppController>(AppController());
   GetIt.I.registerSingleton<HomeController>(HomeController());
-}
-
-void main() {
-  getItSetup();
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget with WatchItMixin {
