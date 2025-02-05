@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:sirius_flutter/controllers/main_controller.dart';
 import 'package:watch_it/watch_it.dart';
 
