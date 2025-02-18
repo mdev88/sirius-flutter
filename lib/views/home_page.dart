@@ -32,14 +32,27 @@ class HomePage extends StatelessWidget with WatchItMixin {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Sirius demo'),
       ),
-      body: Column(
-        children: [
-          Text('User:'),
-          Text(
-            '${watchPropertyValue((OdooService os) => os.orpc.sessionId?.userName)}',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ],
+      body: Center(
+        child: Column(
+          children: [
+            watchPropertyValue((OdooService os) {
+              if (os.orpc.sessionId?.id == '' ||
+                  os.orpc.sessionId?.id == null) {
+                return false;
+              } else {
+                return true;
+              }
+            })
+                ? Text(
+                    '${odooCtl.orpc.sessionId?.toString()}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  )
+                : Text(
+                    'User not logged in',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  )
+          ],
+        ),
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -50,7 +63,7 @@ class HomePage extends StatelessWidget with WatchItMixin {
               final res = await odooCtl.login();
               log(res.toString());
             },
-            child: const Icon(Icons.login),
+            child: const Text('Login'),
           ),
           SizedBox(
             height: 16,
@@ -61,7 +74,7 @@ class HomePage extends StatelessWidget with WatchItMixin {
               final res = await odooCtl.logout();
               log(res.toString());
             },
-            child: const Icon(Icons.logout),
+            child: const Text('Logout'),
           ),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
