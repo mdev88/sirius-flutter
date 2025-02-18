@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class HomeController extends ChangeNotifier {
+class SplashController extends ChangeNotifier {
   // /*
   // Counter
   //  */
