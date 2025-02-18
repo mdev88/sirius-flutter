@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppController extends ChangeNotifier {
-  ColorScheme scheme = ColorScheme.fromSeed(
-      seedColor: Colors.teal, brightness: Brightness.light);
+  ColorScheme scheme =
+      ColorScheme.fromSeed(seedColor: Colors.teal, brightness: Brightness.dark);
 
   void changeToLightScheme() {
     scheme = ColorScheme.fromSeed(

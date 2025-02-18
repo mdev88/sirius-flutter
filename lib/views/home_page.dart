@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../controllers/app_controller.dart';
 import '../controllers/home_controller.dart';
+import '../services/odoo_service.dart';
 
 class HomePage extends StatelessWidget with WatchItMixin {
   HomePage({super.key});
@@ -17,6 +20,11 @@ class HomePage extends StatelessWidget with WatchItMixin {
    */
   final homeCtl = GetIt.I.get<HomeController>();
 
+  /*
+  Reference to Odoo's controller
+   */
+  final odooCtl = GetIt.I.get<OdooService>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,49 +32,36 @@ class HomePage extends StatelessWidget with WatchItMixin {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Sirius demo'),
       ),
-      body: watchPropertyValue((HomeController hc) => hc.finished)
-          ? Text(
-              'This is the end',
-              style: Theme.of(context).textTheme.headlineMedium,
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Observo un int: ${watchPropertyValue((HomeController hc) => hc.counter)}',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Observo un String: ${watchPropertyValue((HomeController hc) => hc.title)}',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Observo propiedad dentro de un objeto (User.name): ${watchPropertyValue((HomeController hc) => hc.user.name)}',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ],
-            ),
+      body: Column(
+        children: [
+          Text('User:'),
+          Text(
+            '${watchPropertyValue((OdooService os) => os.orpc.sessionId?.userName)}',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            tooltip: 'Increment',
-            onPressed: homeCtl.pushButtonAction,
-            child: const Icon(Icons.plus_one),
+            tooltip: 'Login',
+            onPressed: () async {
+              final res = await odooCtl.login();
+              log(res.toString());
+            },
+            child: const Icon(Icons.login),
           ),
-          SizedBox(height: 10),
-          FloatingActionButton(
-            tooltip: 'Increment',
-            onPressed: appCtl.changeToDarkScheme,
-            child: const Icon(Icons.palette_outlined),
+          SizedBox(
+            height: 16,
           ),
-          SizedBox(height: 10),
           FloatingActionButton(
-            tooltip: 'Increment',
-            onPressed: appCtl.changeToLightScheme,
-            child: const Icon(Icons.palette_rounded),
+            tooltip: 'Logout',
+            onPressed: () async {
+              final res = await odooCtl.logout();
+              log(res.toString());
+            },
+            child: const Icon(Icons.logout),
           ),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
