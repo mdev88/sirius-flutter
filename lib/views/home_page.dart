@@ -40,6 +40,5 @@ class HomePage extends StatelessWidget {
         child: const Text('Logout'),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-    ;
   }
 }

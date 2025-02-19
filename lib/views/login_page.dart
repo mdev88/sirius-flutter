@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sirius_flutter/main.dart';
 
 import '../services/odoo_service.dart';
 import 'home_page.dart';
@@ -32,8 +33,8 @@ class LoginPage extends StatelessWidget {
         onPressed: () async {
           final res = await odooSrv.login();
           // Go to login
-          await Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+          await Navigator.pushReplacement(navigatorKey.currentContext!,
+              MaterialPageRoute(builder: (context) => HomePage()));
           log(res.toString());
         },
         child: const Text('Login'),
