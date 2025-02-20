@@ -1,7 +1,8 @@
 // key name must be unique per user/db pair.
-const cacheSessionKey = 'odoo-session';
+const cacheSessionKey = 'sirius-session';
 
-const databaseURL = 'http://martes.faster.es:5069';
-const databaseName = 'sirius';
-const username = 'juandemo@correo.es';
-const password = 'demoDem0';
+// const username = 'juandemo@correo.es';
+// const password = 'demoDem0';
+// const serverURL = 'http://martes.faster.es';
+// const serverPort = '5069';
+// const databaseName = 'sirius';

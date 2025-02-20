@@ -27,21 +27,28 @@ SessionChangedCallback storeSesion(SharedPreferences prefs) {
 }
 
 class OdooService extends ChangeNotifier {
-  late OdooClient orpc;
+  OdooClient? orpc;
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
+
+    String serverURL = prefs.getString('serverURL') ?? '';
+    int serverPort = prefs.getInt('serverPort') ?? 0;
+
+    if (serverURL.isEmpty || serverPort == 0) {
+      return;
+    }
 
     // Restore session if it was stored in shared prefs
     final sessionString = prefs.getString(cacheSessionKey);
     OdooSession? session = sessionString == null
         ? null
         : OdooSession.fromJson(json.decode(sessionString));
-    orpc = OdooClient(databaseURL, session);
+    orpc = OdooClient('$serverURL:$serverPort', session);
 
     // Bind session change listener to store recent session
     final sessionChangedHandler = storeSesion(prefs);
-    orpc.sessionStream.listen(sessionChangedHandler);
+    orpc!.sessionStream.listen(sessionChangedHandler);
 
     /// Here restored session may already be expired.
     /// We will know it on any RPC call getting [OdooSessionExpiredException] exception.
@@ -54,9 +61,24 @@ class OdooService extends ChangeNotifier {
     }
   }
 
-  Future<bool> login() async {
+  Future<bool> login(
+      {required String serverURL,
+      required int serverPort,
+      required String databaseName,
+      required String username,
+      required String password}) async {
+    orpc = OdooClient('$serverURL:$serverPort');
+
     try {
-      await orpc.authenticate(databaseName, username, password);
+      await orpc!.authenticate(databaseName, username, password);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('serverURL', serverURL);
+      await prefs.setInt('serverPort', serverPort);
+      await prefs.setString('databaseName', databaseName);
+      await prefs.setString('username', username);
+      await prefs.setString('password', password);
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -68,7 +90,7 @@ class OdooService extends ChangeNotifier {
 
   Future<bool> logout() async {
     try {
-      await orpc.destroySession();
+      await orpc!.destroySession();
       final prefs = await SharedPreferences.getInstance();
       prefs.clear();
       notifyListeners();

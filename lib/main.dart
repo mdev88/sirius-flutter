@@ -3,6 +3,7 @@ import 'package:sirius_flutter/controllers/app_controller.dart';
 import 'package:sirius_flutter/controllers/splash_controller.dart';
 import 'package:watch_it/watch_it.dart';
 
+import 'controllers/login_controller.dart';
 import 'services/odoo_service.dart';
 import 'views/splash_page.dart';
 
@@ -13,16 +14,17 @@ void main() async {
 
   getItSetup();
 
-  await GetIt.I.get<OdooService>().init();
+  await di.get<OdooService>().init();
 
   runApp(const MyApp());
 }
 
 // Get_it setup.
 void getItSetup() {
-  GetIt.I.registerSingleton<AppController>(AppController());
-  GetIt.I.registerSingleton<OdooService>(OdooService());
-  GetIt.I.registerSingleton<SplashController>(SplashController());
+  di.registerSingleton<AppController>(AppController());
+  di.registerSingleton<OdooService>(OdooService());
+  di.registerSingleton<SplashController>(SplashController());
+  di.registerSingleton<LoginController>(LoginController());
 }
 
 class MyApp extends StatelessWidget with WatchItMixin {

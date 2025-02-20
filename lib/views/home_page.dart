@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:sirius_flutter/main.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../services/odoo_service.dart';
 import 'login_page.dart';
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
   /*
   Reference to Odoo's controller
    */
-  final odooSrv = GetIt.I.get<OdooService>();
+  final odooSrv = di.get<OdooService>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
         child: Text(
-          '${odooSrv.orpc.sessionId?.toString()}',
+          '${odooSrv.orpc!.sessionId?.toString()}',
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),

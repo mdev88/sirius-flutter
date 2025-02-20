@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:odoo_rpc/odoo_rpc.dart';
 import 'package:sirius_flutter/main.dart';
 import 'package:sirius_flutter/views/home_page.dart';
 import 'package:watch_it/watch_it.dart';
@@ -16,17 +17,17 @@ class SplashPage extends StatelessWidget with WatchItMixin {
   /*
   Reference to the App's controller (for switching color scheme)
    */
-  final appCtl = GetIt.I.get<AppController>();
+  final appCtl = di.get<AppController>();
 
   /*
   Reference to this page's controller
    */
-  final homeCtl = GetIt.I.get<SplashController>();
+  final homeCtl = di.get<SplashController>();
 
   /*
   Reference to Odoo's controller
    */
-  final odooSrv = GetIt.I.get<OdooService>();
+  final odooSrv = di.get<OdooService>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +43,13 @@ class SplashPage extends StatelessWidget with WatchItMixin {
   }
 
   void checkSession(BuildContext context) async {
-    log('${odooSrv.orpc.sessionId?.id}');
-    if (odooSrv.orpc.sessionId?.id == '' ||
-        odooSrv.orpc.sessionId?.id == null) {
+    if (odooSrv.orpc.runtimeType != OdooClient) {
+      log('OdooClient is not ready');
+    }
+
+    if (odooSrv.orpc.runtimeType != OdooClient ||
+        odooSrv.orpc!.sessionId?.id == '' ||
+        odooSrv.orpc!.sessionId?.id == null) {
       // Go to login
       await Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LoginPage()));
