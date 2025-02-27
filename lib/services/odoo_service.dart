@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:watch_it/watch_it.dart';
+import 'package:http/http.dart' as http;
 
 import '../config/odoo_secrets.dart';
 
@@ -72,6 +74,8 @@ class OdooService extends ChangeNotifier {
     try {
       await orpc!.authenticate(databaseName, username, password);
 
+      log('Session: ${orpc?.sessionId}');
+
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('serverURL', serverURL);
       await prefs.setInt('serverPort', serverPort);
@@ -86,6 +90,22 @@ class OdooService extends ChangeNotifier {
       notifyListeners();
       return false;
     }
+  }
+
+  Future<void> getConfigJson() async {
+    // final prefs = await SharedPreferences.getInstance();
+
+    final token = di<OdooService>().orpc!.sessionId!.id;
+
+    log('Stored token: $token');
+
+    final headersData = {"cookie": "session_id=$token"};
+
+    final url = Uri.http('martes.faster.es:5069', 'sirius');
+
+    final res = await http.get(url, headers: headersData);
+
+    log('/sirius response: ${res.body}');
   }
 
   Future<bool> logout() async {

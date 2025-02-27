@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sirius_flutter/controllers/login_controller.dart';
@@ -148,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   HomePage()));
                                     }
                                   } catch (e) {
-                                    print(e);
+                                    log(e.toString());
                                   }
                                 },
                                 icon: const Icon(Icons.login),
@@ -171,29 +173,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text('Login'),
-    //   ),
-    //   body: Center(
-    //     child: Column(
-    //       children: const [
-    //         Text('Login page'),
-    //       ],
-    //     ),
-    //   ),
-    //   floatingActionButton: FloatingActionButton(
-    //     tooltip: 'Login',
-    //     onPressed: () async {
-    //       final res = await odooSrv.login();
-    //       // Go to login
-    //       await Navigator.pushReplacement(navigatorKey.currentContext!,
-    //           MaterialPageRoute(builder: (context) => HomePage()));
-    //       log(res.toString());
-    //     },
-    //     child: const Text('Login'),
-    //   ),
-    // );
   }
 }

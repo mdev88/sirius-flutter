@@ -28,16 +28,24 @@ class HomePage extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Logout',
-        onPressed: () async {
-          final res = await odooSrv.logout();
-          // Go to login
-          await Navigator.pushReplacement(navigatorKey.currentContext!,
-              MaterialPageRoute(builder: (context) => LoginPage()));
-          log(res.toString());
-        },
-        child: const Text('Logout'),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            tooltip: 'Logout',
+            onPressed: () async {
+              final res = await odooSrv.logout();
+              // Go to login
+              await Navigator.pushReplacement(navigatorKey.currentContext!,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+              log(res.toString());
+            },
+            child: const Text('Logout'),
+          ),
+          FloatingActionButton(onPressed: () async {
+            await odooSrv.getConfigJson();
+          })
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
