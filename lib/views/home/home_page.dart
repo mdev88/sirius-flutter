@@ -6,6 +6,7 @@ import 'package:sirius_flutter/views/form/FormPage.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../controllers/home_controller.dart';
+import '../../misc/utils.dart';
 import '../login/login_page.dart';
 
 class HomePage extends WatchingStatefulWidget {
@@ -67,7 +68,9 @@ class _HomePageState extends State<HomePage> {
           FloatingActionButton(
               heroTag: 'getConfigJson',
               onPressed: () async {
+                Utils.showProgressDialog(context);
                 await controller.getConfigJson();
+                Utils.closeProgressDialog(context);
               })
         ],
       ),
