@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 import 'package:sirius_flutter/main.dart';
-import 'package:sirius_flutter/views/home_page.dart';
+import 'package:sirius_flutter/views/home/home_page.dart';
 import 'package:watch_it/watch_it.dart';
 
-import '../controllers/app_controller.dart';
-import '../controllers/splash_controller.dart';
-import '../services/odoo_service.dart';
-import 'login_page.dart';
+import '../../controllers/app_controller.dart';
+import '../../controllers/splash_controller.dart';
+import '../../services/odoo_service.dart';
+import '../login/login_page.dart';
 
 class SplashPage extends StatelessWidget with WatchItMixin {
   SplashPage({super.key});

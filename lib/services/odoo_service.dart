@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:odoo_rpc/odoo_rpc.dart';
+import 'package:pretty_print_json/pretty_print_json.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watch_it/watch_it.dart';
-import 'package:http/http.dart' as http;
 
 import '../config/odoo_secrets.dart';
+import '../models/sirius_form.dart';
 
 typedef SessionChangedCallback = void Function(OdooSession sessionId);
 
@@ -31,11 +33,16 @@ SessionChangedCallback storeSesion(SharedPreferences prefs) {
 class OdooService extends ChangeNotifier {
   OdooClient? orpc;
 
+  List<SiriusForm> forms = [];
+
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
 
     String serverURL = prefs.getString('serverURL') ?? '';
     int serverPort = prefs.getInt('serverPort') ?? 0;
+    String username = prefs.getString('username') ?? '';
+    String password = prefs.getString('password') ?? '';
+    String databaseName = prefs.getString('databaseName') ?? '';
 
     if (serverURL.isEmpty || serverPort == 0) {
       return;
@@ -56,7 +63,7 @@ class OdooService extends ChangeNotifier {
     /// We will know it on any RPC call getting [OdooSessionExpiredException] exception.
     if (sessionString == null) {
       // log('Logging with credentials');
-      // await orpc.authenticate(databaseName, username, password);
+      await orpc!.authenticate(databaseName, username, password);
       log('Not logged in.');
     } else {
       log('Using existing session. Hope it is not expired');
@@ -92,7 +99,7 @@ class OdooService extends ChangeNotifier {
     }
   }
 
-  Future<void> getConfigJson() async {
+  Future<List<SiriusForm>> getConfigJson() async {
     // final prefs = await SharedPreferences.getInstance();
 
     final token = di<OdooService>().orpc!.sessionId!.id;
@@ -105,7 +112,14 @@ class OdooService extends ChangeNotifier {
 
     final res = await http.get(url, headers: headersData);
 
-    log('/sirius response: ${res.body}');
+    log('/sirius response: ${prettyJson(res.body)}');
+
+    final jsonRes = json.decode(res.body);
+
+    final List<SiriusForm> forms =
+        jsonRes.map<SiriusForm>((form) => SiriusForm.fromJson(form)).toList();
+
+    return forms;
   }
 
   Future<bool> logout() async {
