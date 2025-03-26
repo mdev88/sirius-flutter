@@ -1,7 +1,4 @@
 import 'sirius_field.dart';
-
-enum ViewType { form }
-
 class SiriusForm {
   SiriusForm({
     required this.name,
@@ -34,7 +31,7 @@ class SiriusForm {
    */
 
   String name;
-  ViewType type;
+  String type;
   bool canCreate;
   bool canRead;
   bool canWrite;
@@ -44,7 +41,7 @@ class SiriusForm {
   factory SiriusForm.fromJson(Map<String, dynamic> json) {
     return SiriusForm(
       name: json['name'],
-      type: ViewType.form,
+      type: json['type'],
       canCreate: json['can_create'],
       canRead: json['can_read'],
       canWrite: json['can_write'],

@@ -16,9 +16,13 @@ class HomeController extends ChangeNotifier {
     return odooSrv.orpc!.sessionId?.toString();
   }
 
-  getConfigJson() async {
-    forms = await odooSrv.getConfigJson();
-    notifyListeners();
+  Future<void> getConfigJson() async {
+    try {
+      forms = await odooSrv.getConfigJson();
+      notifyListeners();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   logout() async {

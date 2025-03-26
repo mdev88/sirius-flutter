@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
             return Card(
               child: ListTile(
                 title: Text('View name: ${hc.forms[index].name}'),
-                subtitle: Text('Type: ${hc.forms[index].type.name}'),
+                subtitle: Text('Type: ${hc.forms[index].type}'),
                 onTap: () {
                   log('Tapped on ${hc.forms[index].name}');
                   Navigator.of(context).push(MaterialPageRoute(
@@ -68,10 +68,19 @@ class _HomePageState extends State<HomePage> {
           FloatingActionButton(
               heroTag: 'getConfigJson',
               onPressed: () async {
+
                 Utils.showProgressDialog(context);
-                await controller.getConfigJson();
-                Utils.closeProgressDialog(context);
-              })
+
+                try {
+                  await controller.getConfigJson();
+                } catch (e) {
+                  log('Error: $e');
+                } finally {
+                  Utils.closeProgressDialog(context);
+                }
+
+
+              },child: Icon(Icons.sync),),
         ],
       ),
     );

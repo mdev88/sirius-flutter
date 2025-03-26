@@ -112,7 +112,14 @@ class OdooService extends ChangeNotifier {
 
     final res = await http.get(url, headers: headersData);
 
-    log('/sirius response: ${prettyJson(res.body)}');
+    try {
+      json.decode(res.body);
+    } on FormatException catch (_) {
+      throw Exception('Not a JSON response');
+    }
+
+    // log('/sirius response: ${prettyJson(res.body)}');
+    log('/sirius response: ${res.body}');
 
     final jsonRes = json.decode(res.body);
 

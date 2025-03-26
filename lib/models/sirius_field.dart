@@ -1,8 +1,10 @@
-class SiriusField {
+import 'package:sirius_flutter/models/sirius_base_field.dart';
+
+class SiriusField extends SiriusBaseField {
   SiriusField({
     required this.label,
-    required this.ttype,
     required this.type,
+    required super.ttype,
   });
 
   /*
@@ -14,7 +16,8 @@ class SiriusField {
    */
 
   String label;
-  String ttype;
+
+  // String ttype;
   String type;
 
   factory SiriusField.fromJson(Map<String, dynamic> json) {
