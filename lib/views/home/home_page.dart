@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/main.dart';
+import 'package:sirius_flutter/views/form/FormPage.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../controllers/home_controller.dart';
@@ -37,6 +38,8 @@ class _HomePageState extends State<HomePage> {
                 subtitle: Text('Type: ${hc.forms[index].type.name}'),
                 onTap: () {
                   log('Tapped on ${hc.forms[index].name}');
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => FormPage(form: hc.forms[index])));
                 },
               ),
             );
