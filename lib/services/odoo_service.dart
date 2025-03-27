@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watch_it/watch_it.dart';
@@ -18,10 +19,10 @@ SessionChangedCallback storeSesion(SharedPreferences prefs) {
   /// It receives configured [SharedPreferences] instance.
   void sessionChanged(OdooSession sessionId) {
     if (sessionId.id == '') {
-      log('sessionChanged - sessionId.id == \'\'');
+      Logger().i('sessionChanged - sessionId.id == \'\'');
       prefs.remove(cacheSessionKey);
     } else {
-      log('sessionChanged - ${sessionId.toJson()}');
+      Logger().i('sessionChanged - ${sessionId.toJson()}');
       prefs.setString(cacheSessionKey, json.encode(sessionId.toJson()));
     }
   }
@@ -61,11 +62,10 @@ class OdooService extends ChangeNotifier {
     /// Here restored session may already be expired.
     /// We will know it on any RPC call getting [OdooSessionExpiredException] exception.
     if (sessionString == null) {
-      // log('Logging with credentials');
+      Logger().i('Not logged in. Attempting new login.');
       await orpc!.authenticate(databaseName, username, password);
-      log('Not logged in.');
     } else {
-      log('Using existing session. Hope it is not expired');
+      Logger().i('Using existing session. Hope it is not expired');
     }
   }
 
@@ -80,7 +80,7 @@ class OdooService extends ChangeNotifier {
     try {
       await orpc!.authenticate(databaseName, username, password);
 
-      log('Session: ${orpc?.sessionId}');
+      Logger().i('Session: ${orpc?.sessionId}');
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('serverURL', serverURL);
@@ -92,7 +92,7 @@ class OdooService extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      log('$e');
+      Logger().e('$e');
       notifyListeners();
       return false;
     }
@@ -114,11 +114,13 @@ class OdooService extends ChangeNotifier {
     try {
       json.decode(res.body);
     } on FormatException catch (_) {
+      Logger().e('Not a JSON response!\n\n${res.body}');
       throw Exception('Not a JSON response');
     }
 
     // log('/sirius response: ${prettyJson(res.body)}');
-    log('/sirius response: ${res.body}');
+    Logger().i('/sirius response:\n${res.body}');
+    // log('/sirius response: ${res.body}');
 
     final jsonRes = json.decode(res.body);
 
@@ -134,9 +136,10 @@ class OdooService extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
       notifyListeners();
+      Logger().i('Logged out');
       return true;
     } catch (e) {
-      log('$e');
+      Logger().e('$e');
       notifyListeners();
       return false;
     }

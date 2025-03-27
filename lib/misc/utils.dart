@@ -29,22 +29,44 @@ class U {
         });
   }
 
-  static showMessageDialog(BuildContext context, String message) async {
+  static Future<void> showMessageDialog(
+      BuildContext context, String message) async {
     await showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (_) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
-                    child: Center(child: Text(message))),
-              ],
+          return Padding(
+            padding: const EdgeInsets.all(40.0),
+            child: Material(
+              color: Colors.transparent,
+              child: Flex(
+                mainAxisAlignment: MainAxisAlignment.center,
+                direction: Axis.vertical,
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: Theme.of(context).colorScheme.surface,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 20.0, 20.0, 8.0),
+                            child: Text(
+                              message,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text('Close'))
+                        ],
+                      ))
+                ],
+              ),
             ),
           );
         });
@@ -66,7 +88,7 @@ class U {
       await method();
     } catch (e) {
       if (showErrorsInDialog && context.mounted) {
-        showMessageDialog(context, e.toString());
+        await showMessageDialog(context, e.toString());
       }
     } finally {
       if (showProgressDialog) {
