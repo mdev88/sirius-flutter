@@ -100,20 +100,20 @@ class OdooService extends ChangeNotifier {
   }
 
   Future<List<SiriusForm>> getConfigJson() async {
-    // final prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
+
+    final serverUrl = prefs.getString('serverURL');
+    final serverHost = Uri.parse(serverUrl!).host;
+    final serverPort = prefs.getInt('serverPort');
+    // final databaseName = prefs.getString('databaseName');
+    // final username = prefs.getString('username');
+    // final password = prefs.getString('password');
 
     final token = di<OdooService>().orpc!.sessionId!.id;
 
-    log('Stored token: $token');
-
     final headersData = {"cookie": "session_id=$token"};
 
-    final url = Uri.http('martes.faster.es:5069', 'sirius');
-
-    // TODO Use saved information from shared preferences
-
-    // TODO add timeout
-
+    final url = Uri.http('$serverHost:$serverPort', 'sirius');
     final res = await http.get(url, headers: headersData);
 
     try {
@@ -137,7 +137,7 @@ class OdooService extends ChangeNotifier {
     try {
       await orpc!.destroySession();
       final prefs = await SharedPreferences.getInstance();
-      prefs.clear();
+      await prefs.clear();
       notifyListeners();
       return true;
     } catch (e) {
