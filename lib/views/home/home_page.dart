@@ -30,22 +30,35 @@ class _HomePageState extends State<HomePage> {
         title: Text('Sirius demo'),
       ),
       body: watchPropertyValue((HomeController hc) {
-        return ListView.builder(
-          itemCount: hc.forms.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                title: Text('View name: ${hc.forms[index].name}'),
-                subtitle: Text('Type: ${hc.forms[index].type}'),
-                onTap: () {
-                  log('Tapped on ${hc.forms[index].name}');
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => FormPage(form: hc.forms[index])));
+        return hc.forms.isEmpty
+            ? SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('No hay elementos para mostrar', style: Theme.of(context).textTheme.bodyLarge,),
+                    ),
+                  ],
+                ),
+              )
+            : ListView.builder(
+                itemCount: hc.forms.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text('View name: ${hc.forms[index].name}'),
+                      subtitle: Text('Type: ${hc.forms[index].type}'),
+                      onTap: () {
+                        log('Tapped on ${hc.forms[index].name}');
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => FormPage(form: hc.forms[index])));
+                      },
+                    ),
+                  );
                 },
-              ),
-            );
-          },
-        );
+              );
       }),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,

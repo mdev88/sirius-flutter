@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../services/odoo_service.dart';
@@ -96,7 +97,6 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
     validateForm();
     if (hasErrors) {
-      log('Has errors');
       return false;
     }
     loading = true;
@@ -120,7 +120,7 @@ class LoginController extends ChangeNotifier {
         return true;
       }
     } catch (e) {
-      log(e.toString());
+      Logger().e(e.toString());
       loading = false;
       errorMessage = e.toString();
       notifyListeners();

@@ -86,14 +86,12 @@ class U {
 
     try {
       await method();
+      U.closeDialog(context);
     } catch (e) {
-      if (showErrorsInDialog && context.mounted) {
-        await showMessageDialog(context, e.toString());
-      }
-    } finally {
-      if (showProgressDialog) {
-        if (context.mounted) {
-          U.closeDialog(context);
+      if (context.mounted) {
+        U.closeDialog(context);
+        if (showErrorsInDialog) {
+          await showMessageDialog(context, e.toString());
         }
       }
     }
