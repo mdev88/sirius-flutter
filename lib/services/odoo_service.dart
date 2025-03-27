@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:odoo_rpc/odoo_rpc.dart';
-import 'package:pretty_print_json/pretty_print_json.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watch_it/watch_it.dart';
 
@@ -38,11 +37,11 @@ class OdooService extends ChangeNotifier {
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
 
-    String serverURL = prefs.getString('serverURL') ?? '';
-    int serverPort = prefs.getInt('serverPort') ?? 0;
-    String username = prefs.getString('username') ?? '';
-    String password = prefs.getString('password') ?? '';
-    String databaseName = prefs.getString('databaseName') ?? '';
+    final serverURL = prefs.getString('serverURL') ?? '';
+    final serverPort = prefs.getInt('serverPort') ?? 0;
+    final username = prefs.getString('username') ?? '';
+    final password = prefs.getString('password') ?? '';
+    final databaseName = prefs.getString('databaseName') ?? '';
 
     if (serverURL.isEmpty || serverPort == 0) {
       return;
@@ -53,7 +52,7 @@ class OdooService extends ChangeNotifier {
     OdooSession? session = sessionString == null
         ? null
         : OdooSession.fromJson(json.decode(sessionString));
-    orpc = OdooClient('$serverURL:$serverPort', session);
+    orpc = OdooClient('$serverURL:$serverPort', sessionId: session);
 
     // Bind session change listener to store recent session
     final sessionChangedHandler = storeSesion(prefs);
@@ -102,13 +101,9 @@ class OdooService extends ChangeNotifier {
   Future<List<SiriusForm>> getConfigJson() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final serverUrl = prefs.getString('serverURL');
-    final serverHost = Uri.parse(serverUrl!).host;
-    final serverPort = prefs.getInt('serverPort');
-    // final databaseName = prefs.getString('databaseName');
-    // final username = prefs.getString('username');
-    // final password = prefs.getString('password');
-
+    final serverURL = prefs.getString('serverURL') ?? '';
+    final serverHost = Uri.parse(serverURL).host;
+    final serverPort = prefs.getInt('serverPort') ?? 0;
     final token = di<OdooService>().orpc!.sessionId!.id;
 
     final headersData = {"cookie": "session_id=$token"};

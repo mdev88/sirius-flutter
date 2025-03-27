@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           FloatingActionButton(
             heroTag: 'getConfigJson',
             onPressed: () async {
-              Utils.callAsyncMethod(
+              U.callAsyncMethod(
                   context: context, method: controller.getConfigJson);
             },
             child: Icon(Icons.sync),

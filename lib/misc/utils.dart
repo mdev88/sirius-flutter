@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
-class Utils {
+class U {
   static showProgressDialog(BuildContext context) async {
     await showDialog(
         context: context,
@@ -60,18 +60,18 @@ class Utils {
     bool showProgressDialog = true,
     bool showErrorsInDialog = true,
   }) async {
-    if (showProgressDialog) Utils.showProgressDialog(context);
+    if (showProgressDialog) U.showProgressDialog(context);
 
     try {
       await method();
     } catch (e) {
-      if (showErrorsInDialog) {
+      if (showErrorsInDialog && context.mounted) {
         showMessageDialog(context, e.toString());
       }
     } finally {
       if (showProgressDialog) {
         if (context.mounted) {
-          Utils.closeDialog(context);
+          U.closeDialog(context);
         }
       }
     }

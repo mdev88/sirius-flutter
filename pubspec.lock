@@ -204,10 +204,10 @@ packages:
     dependency: "direct main"
     description:
       name: odoo_rpc
-      sha256: "36595005ca712b5ab92998505f5baf4350fe614cb7e59fb6d6d711a1eeb2b535"
+      sha256: "8244bb148b46293fd99bb6e924b586bc041f7f93f0f47009a19c8e8ae357fd66"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.8"
+    version: "0.6.0"
   path:
     dependency: transitive
     description:
