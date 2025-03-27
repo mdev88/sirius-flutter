@@ -66,21 +66,14 @@ class _HomePageState extends State<HomePage> {
             height: 10,
           ),
           FloatingActionButton(
-              heroTag: 'getConfigJson',
-              onPressed: () async {
+            heroTag: 'getConfigJson',
+            onPressed: () async {
+              
+              Utils.callAsyncMethod(context: context, method: controller.getConfigJson);
 
-                Utils.showProgressDialog(context);
-
-                try {
-                  await controller.getConfigJson();
-                } catch (e) {
-                  log('Error: $e');
-                } finally {
-                  Utils.closeProgressDialog(context);
-                }
-
-
-              },child: Icon(Icons.sync),),
+            },
+            child: Icon(Icons.sync),
+          ),
         ],
       ),
     );

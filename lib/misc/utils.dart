@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class Utils {
@@ -27,7 +29,51 @@ class Utils {
         });
   }
 
-  static closeProgressDialog(BuildContext context) {
+  static showMessageDialog(BuildContext context, String message) async {
+    await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
+                    child: Center(child: Text(message))),
+              ],
+            ),
+          );
+        });
+  }
+
+  static closeDialog(BuildContext context) {
     Navigator.of(context).pop();
+  }
+
+  static void callAsyncMethod({
+    required BuildContext context,
+    required Future<void> Function() method,
+    bool showProgressDialog = true,
+    bool showErrorsInDialog = true,
+  }) async {
+    if (showProgressDialog) Utils.showProgressDialog(context);
+
+    try {
+      await method();
+    } catch (e) {
+      if (showErrorsInDialog) {
+        showMessageDialog(context, e.toString());
+      }
+    } finally {
+      if (showProgressDialog) {
+        if (context.mounted) {
+          Utils.closeDialog(context);
+        }
+      }
+    }
   }
 }

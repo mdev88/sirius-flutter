@@ -110,6 +110,10 @@ class OdooService extends ChangeNotifier {
 
     final url = Uri.http('martes.faster.es:5069', 'sirius');
 
+    // TODO Use saved information from shared preferences
+
+    // TODO add timeout
+
     final res = await http.get(url, headers: headersData);
 
     try {
