@@ -103,12 +103,15 @@ class OdooService extends ChangeNotifier {
 
     final serverURL = prefs.getString('serverURL') ?? '';
     final serverHost = Uri.parse(serverURL).host;
+    final serverScheme = Uri.parse(serverURL).scheme;
     final serverPort = prefs.getInt('serverPort') ?? 0;
     final token = di<OdooService>().orpc!.sessionId!.id;
 
     final headersData = {"cookie": "session_id=$token"};
 
     final url = Uri.http('$serverHost:$serverPort', 'sirius');
+    log('*** $url');
+
     final res = await http.get(url, headers: headersData);
 
     try {
@@ -118,9 +121,7 @@ class OdooService extends ChangeNotifier {
       throw Exception('Not a JSON response');
     }
 
-    // log('/sirius response: ${prettyJson(res.body)}');
     Logger().i('/sirius response:\n${res.body}');
-    // log('/sirius response: ${res.body}');
 
     final jsonRes = json.decode(res.body);
 

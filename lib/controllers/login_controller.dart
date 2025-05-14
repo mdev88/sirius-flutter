@@ -103,6 +103,7 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
     // Call the login service
     try {
+      log('****** Port: ${int.parse(port)}');
       final res = await di.get<OdooService>().login(
           serverURL: server,
           serverPort: int.parse(port),

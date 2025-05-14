@@ -38,7 +38,10 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('No hay elementos para mostrar', style: Theme.of(context).textTheme.bodyLarge,),
+                      child: Text(
+                        'No hay elementos para mostrar',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
                     ),
                   ],
                 ),

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class U {
   static showProgressDialog(BuildContext context) async {
@@ -31,6 +32,7 @@ class U {
 
   static Future<void> showMessageDialog(
       BuildContext context, String message) async {
+    Logger().i('showMessageDialog: $message');
     await showDialog(
         context: context,
         barrierDismissible: true,
@@ -86,7 +88,9 @@ class U {
 
     try {
       await method();
-      U.closeDialog(context);
+      if (context.mounted) {
+        U.closeDialog(context);
+      }
     } catch (e) {
       if (context.mounted) {
         U.closeDialog(context);

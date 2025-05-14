@@ -1,0 +1,2 @@
+/home/user/Development/FlutterProjects/sirius_flutter/android/app/.cxx/Debug/6c392gf3/x86_64/CMakeFiles/edit_cache.dir
+/home/user/Development/FlutterProjects/sirius_flutter/android/app/.cxx/Debug/6c392gf3/x86_64/CMakeFiles/rebuild_cache.dir
